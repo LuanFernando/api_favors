@@ -15,7 +15,6 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        //
         $categorias = Categoria::all();
         return response()->json($categorias);
     }
@@ -28,15 +27,25 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        $categoria = new Categoria();
 
-        $categoria->titulo = $request->titulo;
-        //Na linha debaixo concatena a url APP_URL que esta no .env
-        $categoria->path = env('APP_URL').'/'.$request->file('arquivo')->store('categorias/'.$request->titulo);
-        $categoria->status = 'Bloqueado';
+       /* Se informou o arquivo, retorna um boolean
+        * Se é válido, retorna um boolean
+        */
+        if(($request->file('arquivo') == true) && ($request->file('arquivo')->isValid() == true))
+        {
+            $categoria = new Categoria();
+
+            $categoria->titulo = $request->titulo;
+            //Na linha debaixo concatena a url APP_URL que esta no .env
+            $categoria->path = env('APP_URL').'/'.$request->file('arquivo')->store('categorias/'.$request->titulo);
+            $categoria->status = 'Bloqueado';
+            
+            $categoria->save();
+            unset($categoria);//limpa variavel
+        }else{
+            return response()->json('Atenção ,arquivo com erro!!');
+        }
         
-        $categoria->save();
-        unset($categoria);//limpa variavel
     }
 
     /**
@@ -47,7 +56,19 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-        //
+        $categoria = Categoria::find($id);
+        
+        if($categoria != null && $categoria != ""){
+          if($categoria->status == 'Ativo')
+            {
+                return response()->json($categoria);
+            }else{
+                return response()->json('Atenção ,Categoria não ativa contate o administrador!!');
+            }
+        }else{
+                return response()->json('Categoria não encontrada.');
+        }
+        
     }
 
     /**
@@ -59,7 +80,8 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $categoria = Categoria::findOrFail($id);
+        $categoria->update($request->all());        
     }
 
     /**
@@ -70,6 +92,14 @@ class CategoriaController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+     /* Enum Status 'Ativo','Inativo','Bloqueado' */
+     $categoria = Categoria::findOrFail($id);
+     if($categoria->status != 'Inativo')
+     {
+        $categoria->status = 'Inativo';
+        $categoria->update();    
+     }
+
     }
 }
