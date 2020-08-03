@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 
-//Route::apiResource('usuarios', 'api\UsuarioController');
+Route::apiResource('usuarios', 'api\UsuarioController');
 
 Route::apiResource('categorias', 'api\CategoriaController');
 
