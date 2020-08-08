@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('usuarios', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('perfil_id');
+            $table->unsignedBigInteger('perfil_id');
             $table->string('nome');
             $table->string('email')->unique();
             $table->string('password');
@@ -29,7 +29,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->string('firebase_token');
 
-            //$table->foreign('perfil_id')->references('id')->on('perfils');
+            
 
         });
     }

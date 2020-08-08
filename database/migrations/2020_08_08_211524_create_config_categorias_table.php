@@ -15,7 +15,7 @@ class CreateConfigCategoriasTable extends Migration
     {
         Schema::create('config_categorias', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('categoria_id');
+            $table->unsignedBigInteger('categoria_id');
             $table->string('nome');
             $table->string('descricao');
             $table->date('data_criacao');

@@ -15,8 +15,9 @@ class CreateGruposPermissoesTable extends Migration
     {
         Schema::create('grupos_permissoes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('permissao_id');
-            $table->integer('grupo_id');
+            $table->unsignedBigInteger('permissao_id');
+            $table->unsignedBigInteger('grupo_id');
+
         });
     }
 

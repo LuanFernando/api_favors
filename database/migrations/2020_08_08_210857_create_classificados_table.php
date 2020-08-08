@@ -15,8 +15,8 @@ class CreateClassificadosTable extends Migration
     {
         Schema::create('classificados', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('categoria_id');
-            $table->integer('usuario_id');
+            $table->unsignedBigInteger('categoria_id');
+            $table->unsignedBigInteger('usuario_id');
             $table->string('titulo');
             $table->string('descricao');
             $table->date('data_criacao');
@@ -24,6 +24,7 @@ class CreateClassificadosTable extends Migration
             $table->string('status');
             $table->string('val_definido_usuario');
             $table->string('aberto_oferta');
+            
         });
     }
 
