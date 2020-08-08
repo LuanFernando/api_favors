@@ -15,14 +15,22 @@ class CreateUsersTable extends Migration
     {
         Schema::create('usuarios', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('perfil_id');
             $table->string('nome');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('perfil');
+            $table->date('data_nascimento');
+            $table->string('cpf');
+            $table->string('token');
+            $table->date('data_criacao');
+            $table->date('data_acesso');
+            $table->date('data_perfil');
             $table->enum('status', ['Ativo', 'Inativo','Bloqueado','Em Analise']);
             $table->rememberToken();
-            $table->timestamps();
+            $table->string('firebase_token');
+
+            //$table->foreign('perfil_id')->references('id')->on('perfils');
+
         });
     }
 
