@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Bem Vindo ao Favors Bruxo
                 </div>
 
                 <div class="links">
