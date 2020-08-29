@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Arquivo;
 use App\Models\Categoria;
 
 class CategoriaController extends Controller
@@ -15,8 +16,11 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        $categorias = Categoria::all();
-        return response()->json($categorias);
+        $dados = [
+            'categorias' => Categoria::all(),
+            'arquivos'   => Arquivo::all(),
+        ];
+        return response()->json($dados);
     }
 
     /**
@@ -28,20 +32,30 @@ class CategoriaController extends Controller
     public function store(Request $request)
     {
 
-       /* Se informou o arquivo, retorna um boolean
-        * Se é válido, retorna um boolean
-        */
+       /* Se informou o arquivo retorna um boolean, Se é válido retorna um boolean. */
         if(($request->file('arquivo') == true) && ($request->file('arquivo')->isValid() == true))
         {
-            $categoria = new Categoria();
 
-            $categoria->titulo = $request->titulo;
-            //Na linha debaixo concatena a url APP_URL que esta no .env
-            $categoria->path = env('APP_URL').'/'.$request->file('arquivo')->store('categorias/'.$request->titulo);
+            $categoria = new Categoria();//Objeto Categoria
+            $categoria->nome = $request->nome;
             $categoria->status = 'Bloqueado';
-            
-            $categoria->save();
+            $categoria->save();//Salva dados
+
+            $arquivo   = new Arquivo();//Objeto Arquivo
+            $arquivo->tabela_referencia = 'categorias';
+            $arquivo->nome_original = $request->nome;
+            $arquivo->referencia_id = $categoria->id;//Passando a referencia
+
+            //Na linha debaixo concatena a url APP_URL que esta no .env
+            $arquivo->url_caminho = env('APP_URL').'/'.$request->file('arquivo')->store('categorias/'.$request->nome);
+            $arquivo->status = 'Bloqueado';
+            $arquivo->token_publico = "000001";
+
+            $arquivo->save();
+           
+
             unset($categoria);//limpa variavel
+            unset($arquivo);//limpa variavel
         }else{
             return response()->json('Atenção ,arquivo com erro!!');
         }

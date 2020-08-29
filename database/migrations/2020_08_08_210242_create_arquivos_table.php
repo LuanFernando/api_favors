@@ -20,8 +20,8 @@ class CreateArquivosTable extends Migration
             $table->string('nome_original');
             $table->string('url_caminho');
             $table->string('status');
-            $table->date('data_cadastro');
             $table->string('token_publico');
+            $table->timestamps();
         });
     }
 
