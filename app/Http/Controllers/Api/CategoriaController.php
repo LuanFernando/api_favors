@@ -16,19 +16,13 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        $categoria = Categoria::all();
-        $arquivo   = Arquivo::all();
-
-        foreach ($categoria as $categoria_dt) {
-            foreach ($arquivo as $arquivo_dt) {
-                    if($arquivo_dt->referencia_id == $categoria_dt->id)
-
-                       $dados[$categoria_dt->id] = [ 
-                            'categoria'    => $arquivo_dt->nome_original,
-                            'url_caminho' =>env('APP_URL').'/'.$arquivo_dt->url_caminho,
-                        ];
-            }
-        }
+       
+        $dados = Arquivo::leftJoin('categorias', function($join){
+            $join->on('arquivos.referencia_id', '=' ,'categorias.id');
+        })->get([
+            'categorias.nome',
+            'arquivos.url_caminho'
+        ]);
 
         return response()->json($dados);
     }
