@@ -71,11 +71,18 @@ class CategoriaController extends Controller
     public function show($id)
     {
         $categoria = Categoria::find($id);
+        $arquivo   = Arquivo::where('referencia_id', "=" ,$id)->get();
         
         if($categoria != null && $categoria != ""){
           if($categoria->status == 'Ativo')
             {
-                return response()->json($categoria);
+                $dados = [
+                    'dados_categoria' => [    
+                        'categoria' => $categoria,
+                        'arquivo'   => $arquivo,
+                    ],
+                ];
+                return response()->json($dados);
             }else{
                 return response()->json('Atenção ,Categoria não ativa contate o administrador!!');
             }
