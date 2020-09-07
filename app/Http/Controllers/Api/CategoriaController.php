@@ -47,7 +47,7 @@ class CategoriaController extends Controller
             $arquivo->referencia_id = $categoria->id;//Passando a referencia
 
             //Na linha debaixo concatena a url APP_URL que esta no .env
-            $arquivo->url_caminho = env('APP_URL').'/'.$request->file('arquivo')->store('categorias/'.$request->nome);
+            $arquivo->url_caminho = $request->file('arquivo')->store('categorias/'.$request->nome);
             $arquivo->status = 'Bloqueado';
             $arquivo->token_publico = "000001";
 
@@ -78,8 +78,8 @@ class CategoriaController extends Controller
             {
                 $dados = [
                     'dados_categoria' => [    
-                        'categoria' => $categoria,
-                        'arquivo'   => $arquivo,
+                        'categoria' => [ $categoria->id,$categoria->nome ],
+                        'arquivo'   => env('APP_URL').'/'.$arquivo[0]->url_caminho,//Indice 0 é necessario para capturar os valores dentro do array
                     ],
                 ];
                 return response()->json($dados);
