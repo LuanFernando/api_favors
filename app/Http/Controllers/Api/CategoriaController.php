@@ -53,7 +53,7 @@ class CategoriaController extends Controller
 
             $arquivo   = new Arquivo();//Objeto Arquivo
             $arquivo->tabela_referencia = 'categorias';
-            $arquivo->nome_original = $request->nome;
+            $arquivo->nome_original = $request->file('arquivo')->getClientOriginalName();
             $arquivo->referencia_id = $categoria->id;//Passando a referencia
 
             //Na linha debaixo concatena a url APP_URL que esta no .env
