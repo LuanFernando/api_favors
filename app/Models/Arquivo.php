@@ -8,4 +8,5 @@ class Arquivo extends Model
 {
     //
     protected $table = "arquivos";
+
 }

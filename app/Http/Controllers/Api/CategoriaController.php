@@ -24,6 +24,11 @@ class CategoriaController extends Controller
             'arquivos.url_caminho'
         ]);
 
+        /*Concatena Url base http://localhost/api_favors/public*/
+        foreach ($dados as $key => $value) {
+            $dados[$key]->url_caminho = env('APP_URL').'/'.$value->url_caminho;
+        }
+
         return response()->json($dados);
     }
 
